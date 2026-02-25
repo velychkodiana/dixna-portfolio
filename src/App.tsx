@@ -1,7 +1,64 @@
+import { useEffect } from 'react';
 import './index.css';
 import myPhoto from './assets/profile-pic2.png';
 
+
 export default function App() {
+    const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        const targetElement = document.getElementById('contact');
+
+        if (targetElement) {
+            const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY;
+            const startPosition = window.scrollY;
+            const distance = targetPosition - startPosition;
+            const duration = 1000;
+
+            let start: number | null = null;
+
+            // This is the easing math that makes it start slow, speed up, and end slow (buttery smooth!)
+            const easeInOutCubic = (t: number, b: number, c: number, d: number) => {
+                t /= d / 2;
+                if (t < 1) return (c / 2) * t * t * t + b;
+                t -= 2;
+                return (c / 2) * (t * t * t + 2) + b;
+            };
+
+            const animation = (currentTime: number) => {
+                if (start === null) start = currentTime;
+                const timeElapsed = currentTime - start;
+                const run = easeInOutCubic(timeElapsed, startPosition, distance, duration);
+
+                window.scrollTo(0, run);
+
+                if (timeElapsed < duration) {
+                    requestAnimationFrame(animation);
+                } else {
+                    window.scrollTo(0, targetPosition); // Failsafe to ensure it lands exactly on target
+                }
+            };
+
+            requestAnimationFrame(animation);
+        }
+    };
+        useEffect(() => {
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                        }
+                    });
+                },
+                { threshold: 0.1 } // Triggers when 10% of the element is visible
+            );
+
+            const revealElements = document.querySelectorAll('.reveal');
+            revealElements.forEach((el) => observer.observe(el));
+
+            return () => observer.disconnect();
+        }, []);
+
     return (
         <>
             <div className="noise-overlay"></div>
@@ -16,11 +73,11 @@ export default function App() {
                     <p className="hero-desc">
                         Crafting digital experiences that are beautifully designed and flawlessly engineered. I bring ideas to life through code, aesthetics, and storytelling.
                     </p>
-                    <a href="#contact" className="cta-button">Let's Create Together</a>
+                    <a href="#contact" className="cta-button" onClick={handleScroll}>Let's Create Together</a>
                 </header>
 
                 {/* ABOUT ME */}
-                <section className="editorial-section">
+                <section className="editorial-section reveal">
                     <div className="editorial-grid">
                         <div className="image-wrapper">
                             <img src={myPhoto} alt="Dixna" className="profile-pic" />
@@ -50,7 +107,7 @@ export default function App() {
                 </section>
 
                 {/* SKILLS & LANGUAGES */}
-                <section className="skills-section">
+                <section className="skills-section reveal">
                     <h3 className="section-title center">My <span className="handwritten">toolkit</span></h3>
 
                     <div className="skills-container">
@@ -101,7 +158,7 @@ export default function App() {
                 </section>
 
                 {/* PROJECTS */}
-                <section className="projects-section">
+                <section className="projects-section reveal">
                     <div className="section-header">
                         <h3 className="section-title">Selected <span className="handwritten">works</span></h3>
                         <p className="body-text">A showcase of engineering and design.</p>
