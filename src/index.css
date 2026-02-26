@@ -1,5 +1,6 @@
 :root {
-  --bg-gradient: linear-gradient(120deg, #fdfbfb 0%, #f1ebf5 40%, #e0f2fe 100%);
+  /* Updated to richer, more distinct girly pastels: pearl, lilac, baby blue, soft pink */
+  --bg-gradient: linear-gradient(120deg, #fdfbfb 0%, #eaddf7 30%, #dbeafe 70%, #fce7f3 100%);
   --text-dark: #1e293b;
   --text-muted: #64748b;
   --border-color: rgba(30, 41, 59, 0.15);
@@ -19,11 +20,8 @@
   padding: 0;
 }
 
+/* We removed the background from the body to fix the mobile bug! */
 body {
-  background: var(--bg-gradient);
-  background-size: 200% 200%; /* Makes the gradient larger than the screen */
-  animation: gradientMove 15s ease infinite; /* Animates it slowly over 15 seconds */
-  background-attachment: fixed;
   color: var(--text-dark);
   font-family: var(--font-sans);
   line-height: 1.6;
@@ -31,7 +29,24 @@ body {
   overflow-x: hidden;
 }
 
-/* Add this right below the body tag to control the movement */
+html {
+  scroll-behavior: smooth;
+}
+
+/* This creates a dedicated, un-buggy layer just for the moving background */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background: var(--bg-gradient);
+  background-size: 300% 300%; /* Larger size makes the color blobs much more distinct */
+  animation: gradientMove 15s ease infinite;
+}
+
 @keyframes gradientMove {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }

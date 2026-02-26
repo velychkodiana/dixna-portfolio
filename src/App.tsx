@@ -4,43 +4,48 @@ import myPhoto from './assets/profile-pic2.png';
 
 
 export default function App() {
+// --- BUTTERY SMOOTH, GLIDING SCROLL FUNCTION ---
     const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
         const targetElement = document.getElementById('contact');
 
         if (targetElement) {
-            const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY;
             const startPosition = window.scrollY;
-            const distance = targetPosition - startPosition;
-            const duration = 1000;
+            const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY;
 
-            let start: number | null = null;
+            // Safety check: Prevents the math from trying to scroll past the physical bottom of the page
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const finalTarget = Math.min(targetPosition, maxScroll);
 
-            // This is the easing math that makes it start slow, speed up, and end slow (buttery smooth!)
-            const easeInOutCubic = (t: number, b: number, c: number, d: number) => {
-                t /= d / 2;
-                if (t < 1) return (c / 2) * t * t * t + b;
-                t -= 2;
-                return (c / 2) * (t * t * t + 2) + b;
+            const distance = finalTarget - startPosition;
+            const duration = 1200; // 1.2 seconds. Long enough to feel luxurious, short enough to not be annoying.
+            let startTime: number | null = null;
+
+            // EaseOutQuart formula: Starts fast for instant feedback, then softly glides to a stop
+            const easeOutQuart = (t: number, b: number, c: number, d: number) => {
+                t /= d;
+                t--;
+                return -c * (t * t * t * t - 1) + b;
             };
 
             const animation = (currentTime: number) => {
-                if (start === null) start = currentTime;
-                const timeElapsed = currentTime - start;
-                const run = easeInOutCubic(timeElapsed, startPosition, distance, duration);
+                if (startTime === null) startTime = currentTime;
+                const timeElapsed = currentTime - startTime;
 
+                const run = easeOutQuart(timeElapsed, startPosition, distance, duration);
                 window.scrollTo(0, run);
 
                 if (timeElapsed < duration) {
                     requestAnimationFrame(animation);
                 } else {
-                    window.scrollTo(0, targetPosition); // Failsafe to ensure it lands exactly on target
+                    window.scrollTo(0, finalTarget); // Locks it perfectly on target at the end
                 }
             };
 
             requestAnimationFrame(animation);
         }
     };
+    // ----------------------------------------------
         useEffect(() => {
             const observer = new IntersectionObserver(
                 (entries) => {
