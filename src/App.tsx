@@ -90,7 +90,7 @@ export default function App() {
                         <div className="text-wrapper">
                             <h3 className="section-title">About <span className="handwritten">me</span></h3>
                             <p className="body-text">
-                                I am a passionate developer and designer bridging the gap between aesthetics and functionality. With a strong foundation in software engineering and an eye for modern graphic design, I build digital experiences that are robust under the hood and stunning on the screen.
+                                Hey there, I'm Diana Velychko! <br /> I’m a Software Engineering student and a passionate designer who loves bridging the gap between aesthetics and functionality. While I'm actively learning and growing my skills, my goal is always the same: to build digital experiences that are robust under the hood and stunning on the screen. I bring a strong technical foundation and a fresh eye for modern graphic design to every project I touch.
                             </p>
 
                             <div className="stats-row">
