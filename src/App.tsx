@@ -46,23 +46,47 @@ export default function App() {
         }
     };
     // ----------------------------------------------
-        useEffect(() => {
-            const observer = new IntersectionObserver(
-                (entries) => {
-                    entries.forEach((entry) => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('active');
-                        }
-                    });
-                },
-                { threshold: 0.1 } // Triggers when 10% of the element is visible
-            );
+    useEffect(() => {
+        // 1. The original observer for fading in entire sections
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
 
-            const revealElements = document.querySelectorAll('.reveal');
-            revealElements.forEach((el) => observer.observe(el));
+        const revealElements = document.querySelectorAll('.reveal');
+        revealElements.forEach((el) => observer.observe(el));
 
-            return () => observer.disconnect();
-        }, []);
+        // 2. THE NEW OBSERVER: Watches individual skills for the scroll highlight
+        const skillObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    // If the skill tag hits the middle 10% of the screen, light it up!
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('scroll-hover');
+                    } else {
+                        // Remove the highlight when it scrolls away
+                        entry.target.classList.remove('scroll-hover');
+                    }
+                });
+            },
+            // This margin creates a narrow "trigger zone" exactly in the middle of the screen
+            { rootMargin: '-45% 0px -45% 0px' }
+        );
+
+        const skillTags = document.querySelectorAll('.skill-tag');
+        skillTags.forEach((tag) => skillObserver.observe(tag));
+
+        return () => {
+            observer.disconnect();
+            skillObserver.disconnect(); // Cleans up the new observer
+        };
+    }, []);
 
     return (
         <>
@@ -119,6 +143,8 @@ export default function App() {
                         <span className="skill-tag"><i className="devicon-figma-plain"></i> Figma</span>
                         <span className="skill-tag"><i className="devicon-photoshop-plain"></i> Adobe Photoshop</span>
                         <span className="skill-tag"><i className="devicon-blender-original"></i> Blender 3D</span>
+                        <span className="skill-tag"><i className="devicon-react-original"></i> React & Vite</span>
+                        <span className="skill-tag"><i className="devicon-typescript-plain"></i> TypeScript</span>
                         <span className="skill-tag"><i className="devicon-python-plain"></i> Python</span>
                         <span className="skill-tag"><i className="devicon-html5-plain"></i> HTML & CSS</span>
                         <span className="skill-tag"><i className="devicon-javascript-plain"></i> JavaScript</span>

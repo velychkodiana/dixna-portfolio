@@ -290,40 +290,48 @@ html {
 .projects-grid .project-card:nth-child(3) { transition-delay: 0.3s; }
 
 
-/* Mobile Protections */
+/* Mobile Protections & Layout Overrides */
 @media (max-width: 768px) {
   .editorial-grid { grid-template-columns: 1fr; }
   .image-wrapper { max-width: 400px; margin: 0 auto; }
-  @keyframes levitate {
-    0% { transform: translateY(0); }
-    50% { transform: translateY(-15px); box-shadow: 0 25px 50px rgba(0,0,0,0.05); }
-    100% { transform: translateY(0); }
+
+  /* Forces the skills into a single, uniform column */
+  .skills-container {
+    flex-direction: column;
+    align-items: stretch; /* Makes every tag the exact same full width */
+  }
+
+  .skill-tag {
+    width: 100%;
+    justify-content: center; /* Centers the icon and text inside the wide tag */
+    padding: 1rem; /* Gives them a slightly taller, more clickable mobile feel */
+  }
+
+  /* --- MOBILE SCROLL HIGHLIGHT --- */
+  /* Triggers the dark background when the JS adds the scroll-hover class */
+  .skill-tag.scroll-hover {
+    background: var(--text-dark);
+    color: white;
+    transform: scale(1.02);
+    /* Forces the highlight to be instant and ignore any leftover delays */
+    transition: background 0.1s, color 0.1s, transform 0.2s !important;
   }
 }
 
-/* --- MOBILE SKILLS "WATERFALL" REVEAL --- */
-
-/* 1. Hide the skill tags initially before the section is scrolled to */
-.skills-section.reveal .skill-tag {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-/* 2. Fade them in and slide them up when the section becomes active */
 .skills-section.reveal.active .skill-tag {
   opacity: 1;
   transform: translateY(0);
-  /* We include background and color here so your hover effects still work! */
-  transition: background 0.3s, color 0.3s, opacity 0.5s ease, transform 0.5s ease;
+  /* We separate the properties so the delay ONLY affects opacity and transform */
+  transition-property: background, color, opacity, transform;
+  transition-duration: 0.3s, 0.3s, 0.5s, 0.5s;
 }
 
-/* 3. Apply the one-by-one delay strictly on mobile screens */
-@media (max-width: 768px) {
-  .skills-section.reveal.active .skill-tag:nth-child(1) { transition-delay: 0.1s; }
-  .skills-section.reveal.active .skill-tag:nth-child(2) { transition-delay: 0.2s; }
-  .skills-section.reveal.active .skill-tag:nth-child(3) { transition-delay: 0.3s; }
-  .skills-section.reveal.active .skill-tag:nth-child(4) { transition-delay: 0.4s; }
-  .skills-section.reveal.active .skill-tag:nth-child(5) { transition-delay: 0.5s; }
-  .skills-section.reveal.active .skill-tag:nth-child(6) { transition-delay: 0.6s; }
-  .skills-section.reveal.active .skill-tag:nth-child(7) { transition-delay: 0.7s; }
-}
+.skills-section.reveal.active .skill-tag:nth-child(1) { transition-delay: 0s, 0s, 0.1s, 0.1s; }
+.skills-section.reveal.active .skill-tag:nth-child(2) { transition-delay: 0s, 0s, 0.2s, 0.2s; }
+.skills-section.reveal.active .skill-tag:nth-child(3) { transition-delay: 0s, 0s, 0.3s, 0.3s; }
+.skills-section.reveal.active .skill-tag:nth-child(4) { transition-delay: 0s, 0s, 0.4s, 0.4s; }
+.skills-section.reveal.active .skill-tag:nth-child(5) { transition-delay: 0s, 0s, 0.5s, 0.5s; }
+.skills-section.reveal.active .skill-tag:nth-child(6) { transition-delay: 0s, 0s, 0.6s, 0.6s; }
+.skills-section.reveal.active .skill-tag:nth-child(7) { transition-delay: 0s, 0s, 0.7s, 0.7s; }
+.skills-section.reveal.active .skill-tag:nth-child(8) { transition-delay: 0s, 0s, 0.8s, 0.8s; }
+.skills-section.reveal.active .skill-tag:nth-child(9) { transition-delay: 0s, 0s, 0.9s, 0.9s; }
