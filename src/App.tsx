@@ -172,9 +172,9 @@ export default function App() {
                     <div className="projects-grid">
                         <div className="project-card">
                             <div className="project-num">01</div>
-                            <h4 className="project-title">Climate Scape</h4>
+                            <h4 className="project-title">AtmoScape</h4>
                             <span className="project-role">Full-Stack & 3D</span>
-                            <p className="project-desc">A web application featuring interactive weather visualization using 3D models of cities, built with bilingual support (EN/UA).</p>
+                            <p className="project-desc">A web application featuring interactive weather visualization using 3D models of cities, built with bilingual support (EN/UA). In development.</p>
                             <a href="https://atmoscape.pages.dev" target="_blank" rel="noreferrer" className="project-link">Explore Live →</a>
                         </div>
 

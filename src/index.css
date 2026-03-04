@@ -300,3 +300,30 @@ html {
     100% { transform: translateY(0); }
   }
 }
+
+/* --- MOBILE SKILLS "WATERFALL" REVEAL --- */
+
+/* 1. Hide the skill tags initially before the section is scrolled to */
+.skills-section.reveal .skill-tag {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* 2. Fade them in and slide them up when the section becomes active */
+.skills-section.reveal.active .skill-tag {
+  opacity: 1;
+  transform: translateY(0);
+  /* We include background and color here so your hover effects still work! */
+  transition: background 0.3s, color 0.3s, opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* 3. Apply the one-by-one delay strictly on mobile screens */
+@media (max-width: 768px) {
+  .skills-section.reveal.active .skill-tag:nth-child(1) { transition-delay: 0.1s; }
+  .skills-section.reveal.active .skill-tag:nth-child(2) { transition-delay: 0.2s; }
+  .skills-section.reveal.active .skill-tag:nth-child(3) { transition-delay: 0.3s; }
+  .skills-section.reveal.active .skill-tag:nth-child(4) { transition-delay: 0.4s; }
+  .skills-section.reveal.active .skill-tag:nth-child(5) { transition-delay: 0.5s; }
+  .skills-section.reveal.active .skill-tag:nth-child(6) { transition-delay: 0.6s; }
+  .skills-section.reveal.active .skill-tag:nth-child(7) { transition-delay: 0.7s; }
+}
